@@ -10,8 +10,12 @@ import json
 import numpy as np
 import cv2
 
+################# CONFIGURATION ################
 host = "0.0.0.0"
 port = 5000
+use_template_protection = False
+################################################
+
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -56,9 +60,7 @@ def authenticate():
 		if len(embeddings) > 0:
 			name = "embeddings_" + identifier + ".npy"
 			if os.path.exists(name):
-				enrolled_embeddings = np.load(name)
-				match = bool(face_recognition.compare_faces([enrolled_embeddings], embeddings)[0])
-				response['match'] = match
+				response['match'] = check_match(name, embeddings)
 				response['error'] =  ''
 			else:
 				response['error'] = "User not enrolled"
@@ -69,7 +71,15 @@ def authenticate():
 	return jsonify(response)
 	
 
-	
+def check_match(name, embeddings):
+	if use_template_protection:
+		return False # To be implemented
+	else:
+		enrolled_embeddings = np.load(name)
+		match = bool(face_recognition.compare_faces([enrolled_embeddings], embeddings)[0])
+		return match
+
+
 def get_largest_embedding(image):
 	face_locations = face_recognition.face_locations(image)
 	if len(face_locations) == 0:
