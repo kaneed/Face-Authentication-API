@@ -2,7 +2,6 @@ import requests
 import json
 import os
 
-
 def enroll(user, file):
 	print("Enrollment of " + user + " with file " + file)
 	url = "http://127.0.0.1:5000/enroll"
