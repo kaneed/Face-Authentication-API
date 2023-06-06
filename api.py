@@ -16,9 +16,9 @@ import cv2
 host = "0.0.0.0"
 port = 5000
 use_template_protection = True
-num_bits_per_feature = 1024
-locker_size = 300
-lockers = 1000
+num_bits_per_feature = 20000
+locker_size = 400
+lockers = 4500
 #####################################################
 
 app = Flask(__name__)
